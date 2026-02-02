@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Automobile AI Operations Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6fa8ff">
+</head>
+<body>
+    <header>
+        <h1>Automobile AI Operations Dashboard</h1>
+    </header>
+
+    {% set machines = [
+        {'name':'Engine Line A','runtime':8,'downtime':1,'output':120,'risk':'Low','recommendation':'Continue operation','image':'engine_line_a.png'},
+        {'name':'Engine Line B','runtime':9,'downtime':1.5,'output':115,'risk':'Medium','recommendation':'Schedule maintenance','image':'engine_line_b.png'},
+        {'name':'Paint Line','runtime':10,'downtime':3,'output':90,'risk':'High','recommendation':'Check paint quality','image':'paint_line.png'},
+        {'name':'Assembly Line','runtime':12,'downtime':2,'output':110,'risk':'Medium','recommendation':'Monitor assembly','image':'assembly_line.png'}
+    ] %}
+
+    <div class="dashboard-container">
+        {% for machine in machines %}
+        <div class="machine-card" onclick="showDetails('{{ machine.name }}')">
+            <h3>{{ machine.name }}</h3>
+            <img src="{{ url_for('static', filename='images/' + machine.image) }}" alt="{{ machine.name }}">
+            <p>Runtime: {{ machine.runtime }} hrs</p>
+            <p>Downtime: {{ machine.downtime }} hrs</p>
+            <p>Output: {{ machine.output }}</p>
+            <p>Risk: <span class="risk-level {{ machine.risk|lower }}">{{ machine.risk }}</span></p>
+            <p class="recommendation">
+                <img src="{{ url_for('static', filename='images/' + 
+                ( 'check.png' if machine.risk=='Low' else 'maintenance.png' if machine.risk=='Medium' else 'warning.png')) }}" class="icon">
+                {{ machine.recommendation }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-name"></h2>
+            <p>Runtime: <span id="modal-runtime"></span></p>
+            <p>Downtime: <span id="modal-downtime"></span></p>
+            <p>Output: <span id="modal-output"></span></p>
+            <p>Risk: <span id="modal-risk"></span></p>
+            <p>Recommendation: <span id="modal-recommendation"></span></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('{{ url_for("static", filename="worker.js") }}')
+            .then(registration => {
+                console.log("ServiceWorker registered: ", registration);
+            })
+            .catch(registrationError => {
+                console.log("ServiceWorker registration failed: ", registrationError);
+            });
+        });
+    }
+    </script>
+</body>
+</html>
