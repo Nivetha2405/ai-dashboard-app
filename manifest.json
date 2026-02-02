@@ -1,0 +1,22 @@
+{
+  "name": "Automobile AI Operations Dashboard",
+  "short_name": "AI Dashboard",
+  "description": "Monitor and manage automobile AI operations with live risk and recommendations.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#6fa8ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Downtime Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Machine Downtime Prediction</h1>
+    </header>
+
+    <div class="dashboard-container">
+        {% for machine in machines %}
+        <div class="machine-card">
+            <h3>{{ machine.name }}</h3>
+            <img src="{{ url_for('static', filename='images/' + machine.name|replace(' ', '_') + '.png') }}" 
+                 alt="{{ machine.name }}" width="200">
+            <p>Runtime: {{ machine.runtime }} hrs</p>
+            <p>Predicted Downtime: {{ machine.predicted_downtime }} hrs</p>
+            <p>Risk Level: <span class="risk-level">{{ machine.risk }}</span></p>
+            <p class="recommendation">Recommendation: {{ machine.recommendation }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

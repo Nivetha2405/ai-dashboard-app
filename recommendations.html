@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Machine Recommendations</h1>
+    </header>
+
+    <div class="dashboard-container">
+        {% for machine in machines %}
+        <div class="machine-card">
+            <h3>{{ machine.name }}</h3>
+            <img src="{{ url_for('static', filename='images/' + machine.name|replace(' ', '_') + '.png') }}" 
+                 alt="{{ machine.name }}" width="200">
+            <p>Runtime: {{ machine.runtime }} hrs</p>
+            <p>Downtime: {{ machine.downtime }} hrs</p>
+            <p>Output: {{ machine.output }}</p>
+            <p>Risk Level: <span class="risk-level">{{ machine.risk }}</span></p>
+            <p class="recommendation">Recommended Action: {{ machine.recommendation }}</p>
+
+            {% if machine.alerts %}
+            <div class="alerts">
+                <ul>
+                    {% for alert in machine.alerts %}
+                    <li>{{ alert }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
